@@ -26,6 +26,8 @@
           type="info"
           class="login-btn"
           @click.prevent="handleLogin"
+          :loading="loginLoading"
+          loading-text="登录中..."
         >登录</van-button>
       </div>
     </form>
@@ -39,20 +41,27 @@ export default {
   data () {
     return {
       user: {
-        mobile: '',
-        code: ''
-      }
+        mobile: '18604148640',
+        code: '123456'
+      },
+      loginLoading: false
     }
   },
   methods: {
     async handleLogin () {
+      this.loginLoading = true
       try {
-        const res = await login(this.user)
-        console.log(res)
+        const data = await login(this.user)
+        this.$store.commit('setUser', data)
+        // 先跳转到首页
+        this.$router.push({
+          name: 'home'
+        })
       } catch (err) {
         console.log(err)
         console.log('登录失败')
       }
+      this.loginLoading = false
     }
   }
 }
