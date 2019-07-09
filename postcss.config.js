@@ -1,5 +1,18 @@
-module.exports = {
-  plugins: {
-    autoprefixer: {}
+// 后处理器
+const { sep } = require('path')
+
+module.exports = ({ file }) => {
+  let rootValue = file.dirname.indexOf(`node_modules${sep}vant`) !== -1
+    ? 37.5
+    : 75
+
+  return {
+    plugins: {
+      autoprefixer: {},
+      'postcss-pxtorem': {
+        rootValue,
+        propList: ['*']
+      }
+    }
   }
 }
